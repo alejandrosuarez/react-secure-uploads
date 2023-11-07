@@ -34,7 +34,7 @@ function App() {
         {/* Configuration */}
         <lr-config
           ctx-name="my-uploader"
-          pubkey="854722e0079fefc6d43b" // Add here your Uploadcare project public Key
+          pubkey="YOUR_UPLOADCARE_PUBLIC_KEY" // Add here your Uploadcare project public Key
           max-local-file-size-bytes="500000000"
           img-only="true"
           source-list="local, url, camera, gdrive"
