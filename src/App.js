@@ -45,7 +45,7 @@ function App() {
         {/* Uploader */}
         <div className="uploader-container">
           <lr-file-uploader-regular
-            css-src="https://cdn.jsdelivr.net/npm/@uploadcare/blocks@0.25.0/web/lr-file-uploader-regular.min.css"
+            css-src="https://cdn.jsdelivr.net/npm/@uploadcare/blocks@0.30.0/web/lr-file-uploader-regular.min.css"
             ctx-name="my-uploader"
             className="my-config"
           >
