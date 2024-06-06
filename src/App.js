@@ -36,7 +36,7 @@ function App() {
           ctx-name="my-uploader"
           pubkey="bdf6dcd0a608bd0dacd7" // Add here your Uploadcare project public Key
           max-local-file-size-bytes="500000000"
-          source-list="local, url, camera, gdrive"
+          source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
         ></lr-config>
