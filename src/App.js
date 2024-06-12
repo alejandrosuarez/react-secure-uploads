@@ -28,6 +28,20 @@ function App() {
     fetchSignature();
   }, []);
 
+  // Effect to update LR configuration when userID changes
+  useEffect(() => {
+    const config = document.querySelector('lr-config');
+  
+    if (config) {
+      // Set metadata with hardcoded values in LR configuration
+      config.metadata = {
+        userID: 'f57ed45e-8d2e-4690-ae8e-37aed4583b5c' // Hardcoded userID value
+      };
+      // Log metadata to console
+      console.log('Metadata:', config.metadata);
+    }
+  }, [userID]);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -39,9 +53,6 @@ function App() {
           source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
-          metadata={{
-            userID: '1'
-          }}
         ></lr-config>
 
         {/* Uploader */}
