@@ -53,8 +53,14 @@ function App() {
     const config = document.querySelector('lr-config');
 
     if (config && userID) {
-      // Set metadata dynamically
-      config.metadata = { userID: userID };
+      // Create a new metadata object
+      const metadata = { userID: userID };
+
+      // Convert the metadata object to a JSON string
+      const metadataString = JSON.stringify(metadata);
+
+      // Set the metadata attribute of lr-config element
+      config.setAttribute('metadata', metadataString);
     }
   }, [userID]);
 
