@@ -42,6 +42,9 @@ function App() {
   // Get userID from the URL
   var userID = getParameterByName('userID');
 
+  // Output userID to console for testing
+  console.log('userID:', userID);
+
   // Metadata object to be included in LR configuration
   const metadata = {};
   
