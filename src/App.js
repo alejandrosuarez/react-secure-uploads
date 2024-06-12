@@ -8,6 +8,7 @@ function App() {
   // State for the secure signature and expiration
   const [signature, setSignature] = useState(null);
   const [expire, setExpire] = useState(null);
+  const [userID, setUserID] = useState(null); // State to store userID from URL
 
   // Fetch the secure signature when the component mounts
   useEffect(() => {
@@ -28,19 +29,46 @@ function App() {
     fetchSignature();
   }, []);
 
-  // Effect to update LR configuration with hardcoded metadata
+  // Extract userID parameter from the URL
+  useEffect(() => {
+    function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    // Get userID from the URL
+    const userIDFromURL = getParameterByName('userid');
+
+    // Set userID state
+    setUserID(userIDFromURL);
+  }, []);
+
+  // Effect to update LR configuration with metadata
   useEffect(() => {
     const config = document.querySelector('lr-config');
   
     if (config) {
-      // Set metadata with hardcoded values in LR configuration
-      config.metadata = {
-        userID: 'f57ed45e-8d2e-4690-ae8e-37aed4583b5c' // Hardcoded userID value
-      };
-      // Log metadata to console
-      console.log('Metadata:', config.metadata);
+      // Set metadata based on userID availability
+      if (userID) {
+        // Set metadata with userID from URL
+        config.metadata = {
+          userID: userID
+        };
+        console.log('Metadata with userID from URL:', config.metadata);
+      } else {
+        // Set metadata with hardcoded values
+        config.metadata = {
+          userID: 'f57ed45e-8d2e-4690-ae8e-37aed4583b5c' // Hardcoded userID value
+        };
+        console.log('Metadata with hardcoded userID:', config.metadata);
+      }
     }
-  }, []);
+  }, [userID]);
 
   return (
     <div className="App">
