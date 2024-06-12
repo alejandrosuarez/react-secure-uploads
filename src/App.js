@@ -46,13 +46,17 @@ function App() {
   // Output userID to console for testing
   console.log('userid:', userID);
 
-  // Metadata object to be included in LR configuration
-  const metadata = {};
-  
-  // Set the userID as metadata if it's defined in the URL
-  if (userID) {
-    metadata.userID = userID;
-  }
+  // Effect to update LR configuration when userID changes
+  useEffect(() => {
+    const config = document.querySelector('lr-config');
+
+    if (config && userID) {
+      // Set metadata dynamically in LR configuration
+      config.metadata = (fileEntry) => ({
+        userID: userID // Add the userID to the metadata
+      });
+    }
+  }, [userID]);
   
   return (
     <div className="App">
@@ -65,7 +69,7 @@ function App() {
           source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
-          metadata={metadata} // Include metadata in LR configuration
+          //metadata={metadata} // Include metadata in LR configuration
         ></lr-config>
 
         {/* Uploader */}
