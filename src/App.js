@@ -28,6 +28,28 @@ function App() {
     fetchSignature();
   }, []);
 
+   // Extract userID parameter from the URL
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  // Get userID from the URL
+  var userID = getParameterByName('userID');
+
+  // Metadata object to be included in LR configuration
+  const metadata = {};
+  
+  // Set the userID as metadata if it's defined in the URL
+  if (userID) {
+    metadata.userID = userID;
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -39,6 +61,7 @@ function App() {
           source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
+          metadata={metadata} // Include metadata in LR configuration
         ></lr-config>
 
         {/* Uploader */}
