@@ -15,12 +15,19 @@ function App() {
     async function fetchSignature() {
       try {
         const response = await fetch('bdf6dcd0a608bd0dacd7'); // Add here your Vercel signature generation serverless function
-        const data = await response.json();
-
-        if (response.ok) {
-          setSignature(data.signature);
-          setExpire(data.expire);
+    
+        if (!response.ok) {
+          throw new Error('Failed to fetch signature');
         }
+    
+        const data = await response.json();
+    
+        if (!data.signature || !data.expire) {
+          throw new Error('Invalid signature response');
+        }
+    
+        setSignature(data.signature);
+        setExpire(data.expire);
       } catch (error) {
         console.error("Error fetching signature:", error);
       }
