@@ -8,7 +8,6 @@ function App() {
   // State for the secure signature and expiration
   const [signature, setSignature] = useState(null);
   const [expire, setExpire] = useState(null);
-  const [userID, setUserID] = useState(null); // State to store userID
 
   // Fetch the secure signature when the component mounts
   useEffect(() => {
@@ -16,13 +15,10 @@ function App() {
       try {
         const response = await fetch('bdf6dcd0a608bd0dacd7'); // Add here your Vercel signature generation serverless function
         const data = await response.json();
-        // Get userID from the URL
-        const userIDFromURL = getParameterByName('userid');
 
         if (response.ok) {
           setSignature(data.signature);
           setExpire(data.expire);
-          setUserID(userIDFromURL);
         }
       } catch (error) {
         console.error("Error fetching signature:", error);
@@ -31,8 +27,8 @@ function App() {
 
     fetchSignature();
   }, []);
-  
-  // Extract userID parameter from the URL
+
+   // Extract userID parameter from the URL
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -43,21 +39,20 @@ function App() {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
+  // Get userID from the URL
+  var userID = getParameterByName('userid');
+
   // Output userID to console for testing
   console.log('userid:', userID);
 
-  // Effect to update LR configuration when userID changes
-  useEffect(() => {
-    const config = document.querySelector('lr-config');
-
-    if (config && userID) {
-      // Set metadata dynamically in LR configuration
-      config.metadata = (fileEntry) => ({
-        userID: userID // Add the userID to the metadata
-      });
-    }
-  }, [userID]);
+  // Metadata object to be included in LR configuration
+  const metadata = {};
   
+  // Set the userID as metadata if it's defined in the URL
+  if (userID) {
+    metadata.userID = userID;
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -69,7 +64,7 @@ function App() {
           source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
-          //metadata={metadata} // Include metadata in LR configuration
+          metadata={metadata} // Include metadata in LR configuration
         ></lr-config>
 
         {/* Uploader */}
