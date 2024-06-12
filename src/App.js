@@ -8,26 +8,18 @@ function App() {
   // State for the secure signature and expiration
   const [signature, setSignature] = useState(null);
   const [expire, setExpire] = useState(null);
-  const [userID, setUserID] = useState(null); // State to store userID
 
   // Fetch the secure signature when the component mounts
   useEffect(() => {
     async function fetchSignature() {
       try {
         const response = await fetch('bdf6dcd0a608bd0dacd7'); // Add here your Vercel signature generation serverless function
-    
-        if (!response.ok) {
-          throw new Error('Failed to fetch signature');
-        }
-    
         const data = await response.json();
-    
-        if (!data.signature || !data.expire) {
-          throw new Error('Invalid signature response');
+
+        if (response.ok) {
+          setSignature(data.signature);
+          setExpire(data.expire);
         }
-    
-        setSignature(data.signature);
-        setExpire(data.expire);
       } catch (error) {
         console.error("Error fetching signature:", error);
       }
@@ -36,38 +28,38 @@ function App() {
     fetchSignature();
   }, []);
 
-  // Extract userID parameter from the URL
-  useEffect(() => {
-    function getParameterByName(name, url) {
-      if (!url) url = window.location.href;
-      name = name.replace(/[\[\]]/g, "\\$&");
-      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
+   // Extract userID parameter from the URL
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
 
-    // Get userID from the URL
-    const userIDFromURL = getParameterByName('userid');
+  // Get userID from the URL
+  var userID = getParameterByName('userid');
 
-    // Set userID state
-    setUserID(userIDFromURL);
-  }, []);
+  // Output userID to console for testing
+  console.log('userid:', userID);
+
+  // Metadata object to be included in LR configuration
+  const metadata = {};
+  
+  // Set the userID as metadata if it's defined in the URL
+  if (userID) {
+    metadata.userID = userID;
+  }
 
   // Effect to update LR configuration when userID changes
   useEffect(() => {
     const config = document.querySelector('lr-config');
 
     if (config && userID) {
-      // Create a new metadata object
-      const metadata = { userID: userID };
-
-      // Convert the metadata object to a JSON string
-      const metadataString = JSON.stringify(metadata);
-
-      // Set the metadata attribute of lr-config element
-      config.setAttribute('metadata', metadataString);
+      // Set metadata dynamically in LR configuration
+      config.setAttribute('metadata', JSON.stringify(metadata));
     }
   }, [userID]);
 
