@@ -64,7 +64,11 @@ function App() {
           source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
-          metadata={metadata} // Include metadata in LR configuration
+          metadata={{
+            userID: 'f57ed45e-8d2e-4690-ae8e-37aed4583b5c'
+            // Add more metadata key-value pairs as needed
+          }}
+          //metadata={metadata} // Include metadata in LR configuration
         ></lr-config>
 
         {/* Uploader */}
