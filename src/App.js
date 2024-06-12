@@ -28,7 +28,7 @@ function App() {
     fetchSignature();
   }, []);
 
-  // Effect to update LR configuration when userID changes
+  // Effect to update LR configuration with hardcoded metadata
   useEffect(() => {
     const config = document.querySelector('lr-config');
   
@@ -40,7 +40,7 @@ function App() {
       // Log metadata to console
       console.log('Metadata:', config.metadata);
     }
-  }, [userID]);
+  }, []);
 
   return (
     <div className="App">
