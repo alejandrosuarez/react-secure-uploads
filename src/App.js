@@ -81,6 +81,7 @@ function App() {
           source-list="local, url"
           secure-signature={signature}  // Apply the secure signature
           secure-expire={expire}  // Apply the expiration date
+          enable-audio-recording="true"
         ></lr-config>
 
         {/* Uploader */}
