@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     async function fetchSignature() {
       try {
-        const response = await fetch('YOUR_VERCEL_SERVERLESS_FUNCTION'); // Add here your Vercel signature generation serverless function
+        const response = await fetch('nodejs-serverless-function-express-osg7ii3a1-egorshest.vercel.app'); // Add here your Vercel signature generation serverless function
         const data = await response.json();
 
         if (response.ok) {
@@ -34,7 +34,7 @@ function App() {
         {/* Configuration */}
         <lr-config
           ctx-name="my-uploader"
-          pubkey="YOUR_UPLOADCARE_PUBLIC_KEY" // Add here your Uploadcare project public Key
+          pubkey="b2b9df1b6422412891ce" // Add here your Uploadcare project public Key
           max-local-file-size-bytes="500000000"
           img-only="true"
           source-list="local, url, camera, gdrive"
